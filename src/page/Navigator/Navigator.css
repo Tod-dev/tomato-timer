@@ -1,0 +1,7 @@
+.Horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 2px solid white;
+  width: 85vw;
+}
