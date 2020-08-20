@@ -5,3 +5,14 @@
   border-bottom: 2px solid white;
   width: 85vw;
 }
+
+.myNavBar {
+  width: 85vw;
+}
+
+.bordo {
+  border: 1px solid black !important;
+}
+.extraMargin {
+  margin: 2vh 2vw;
+}
