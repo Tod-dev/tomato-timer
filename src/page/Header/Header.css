@@ -1,0 +1,10 @@
+.myHeaderContainer {
+  width: 85vw;
+  max-height: 30vh;
+}
+.buttons {
+  max-height: 15vh;
+}
+.extraMargin {
+  margin: 2vh 2vw;
+}

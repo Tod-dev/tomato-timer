@@ -1,0 +1,10 @@
+.myFooterContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 85vw;
+  max-height: 10vh;
+  margin: 5vh 0;
+  padding: 2vh 10vw;
+}

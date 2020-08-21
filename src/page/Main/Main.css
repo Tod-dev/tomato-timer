@@ -1,0 +1,42 @@
+.myMainContainer {
+  margin-top: 5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 85vw;
+}
+
+.timer {
+  font-size: 10vmax;
+}
+
+.marginTop {
+  margin-top: 3vh;
+}
+
+.docs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 3vh;
+  font-size: 2vmin;
+  width: 80vw;
+}
+
+.docs > * {
+  max-width: 30vw;
+}
+
+.alert {
+  margin: 3vh 0;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around !important;
+  width: 60vw;
+}

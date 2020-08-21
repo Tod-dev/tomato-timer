@@ -1,9 +1,17 @@
 import React from "react";
 
-import Navigator from "./page/Navigator/Navigator";
+import Header from "./page/Header/Header";
+import Main from "./page/Main/Main";
+import Footer from "./page/Footer/Footer";
 
 const App = () => {
-  return <Navigator />;
+  return (
+    <React.Fragment>
+      <Header />
+      <Main />
+      <Footer />
+    </React.Fragment>
+  );
 };
 
 export default App;
