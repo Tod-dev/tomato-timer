@@ -8,11 +8,12 @@ import MyContext from "./MyContext";
 import ENV from "./env";
 
 const App = () => {
+  const [timersSettings, setTimersSettings] = useState(ENV.timers);
   const [timer, setTimer] = useState(ENV.timers.pomodoro);
-  const providerValue = useMemo(() => ({ timer, setTimer, data: ENV.timers }), [
-    timer,
-    setTimer,
-  ]);
+  const providerValue = useMemo(
+    () => ({ timer, setTimer, data: timersSettings }),
+    [timer, setTimer, timersSettings]
+  );
 
   const handleKeys = (key) => {
     switch (key) {

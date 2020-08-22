@@ -1,7 +1,7 @@
 export default {
   mail: "marcoposta59@gmail.com",
   timers: {
-    pomodoro: 0.1,
+    pomodoro: 25,
     shortBreak: 5,
     longBreak: 10,
   },
