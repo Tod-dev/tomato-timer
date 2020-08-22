@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Alert,
   ButtonGroup,
@@ -10,18 +10,20 @@ import {
   Image,
 } from "react-bootstrap";
 
+import MyContext from "../../MyContext";
 import "./Main.css";
 import settings from "../../images/settings.png";
 
-const Main = () => {
-  const minutes = 0.1;
-  const seconds = minutes * 60;
+const Main = (props) => {
+  const { timer } = useContext(MyContext);
 
-  const [time, setTime] = useState(seconds);
+  useEffect(() => {
+    setTime(timer * 60);
+  }, [timer]);
+
+  const [time, setTime] = useState(timer * 60);
   const [isGoing, setIsGoing] = useState(false);
   const [isDone, setIsDone] = useState(false);
-
-  //let timer;
 
   useEffect(() => {
     if (!isGoing) {
@@ -32,8 +34,8 @@ const Main = () => {
       setIsDone(true);
       return;
     }
-    const timer = setTimeout(() => setTime(time - 1), 1000);
-    return () => clearTimeout(timer);
+    const timeout = setTimeout(() => setTime(time - 1), 1000);
+    return () => clearTimeout(timeout);
   }, [time, isGoing]);
 
   return (
@@ -54,7 +56,13 @@ const Main = () => {
           <Button variant="danger" onClick={() => setIsGoing(false)}>
             Stop
           </Button>
-          <Button variant="secondary" onClick={() => setTime(seconds)}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setTime(timer * 60);
+              setIsGoing(false);
+            }}
+          >
             Reset
           </Button>
         </ButtonGroup>

@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Image from "react-bootstrap/Image";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 
+import MyContext from "../../MyContext";
 import "./Header.css";
 import tomato from "../../images/tomato.png";
 
 const Header = () => {
+  const { setTimer, data } = useContext(MyContext);
+  //console.log(data);
   return (
     <Navbar bg="light" expand="md" className="myHeaderContainer rounded">
       <Navbar.Brand href="#home">
@@ -29,9 +32,15 @@ const Header = () => {
       >
         <Nav>
           <ButtonGroup size="lg" className="buttons">
-            <Button variant="primary">Pomodoro</Button>
-            <Button variant="warning">Short Break</Button>
-            <Button variant="dark">Long Break</Button>
+            <Button variant="primary" onClick={() => setTimer(data.pomodoro)}>
+              Pomodoro
+            </Button>
+            <Button variant="warning" onClick={() => setTimer(data.shortBreak)}>
+              Short Break
+            </Button>
+            <Button variant="dark" onClick={() => setTimer(data.longBreak)}>
+              Long Break
+            </Button>
           </ButtonGroup>
         </Nav>
       </Navbar.Collapse>

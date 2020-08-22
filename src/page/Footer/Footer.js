@@ -4,7 +4,7 @@ import "./Footer.css";
 import github from "../../images/github.png";
 import ig from "../../images/instagram.png";
 import linkedin from "../../images/linkedin.png";
-import mail from "../../images/mail.png";
+import mail from "../../images/gmail.png";
 import ENV from "../../env";
 import Icon from "../../components/Icon";
 
