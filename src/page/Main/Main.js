@@ -9,6 +9,7 @@ import {
   ButtonToolbar,
   Image,
 } from "react-bootstrap";
+import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import MyContext from "../../MyContext";
 import "./Main.css";
@@ -24,6 +25,7 @@ const Main = (props) => {
   const [time, setTime] = useState(timer * 60);
   const [isGoing, setIsGoing] = useState(false);
   const [isDone, setIsDone] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     if (!isGoing) {
@@ -37,6 +39,11 @@ const Main = (props) => {
     const timeout = setTimeout(() => setTime(time - 1), 1000);
     return () => clearTimeout(timeout);
   }, [time, isGoing]);
+
+  const timerReset = () => {
+    setTime(timer * 60);
+    setIsGoing(false);
+  };
 
   return (
     <div className="myMainContainer bg-light rounded">
@@ -56,13 +63,7 @@ const Main = (props) => {
           <Button variant="danger" onClick={() => setIsGoing(false)}>
             Stop
           </Button>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setTime(timer * 60);
-              setIsGoing(false);
-            }}
-          >
+          <Button variant="secondary" onClick={timerReset}>
             Reset
           </Button>
         </ButtonGroup>
@@ -80,43 +81,69 @@ const Main = (props) => {
         {parseInt(time / 60)} : {parseInt(time % 60) < 10 ? "0" : null}
         {parseInt(time % 60)}
       </div>
-      <div className="docs">
-        <Card>
-          <Card.Body>
-            <Card.Title>Keyboard Shortcuts</Card.Title>
-          </Card.Body>
-          <ListGroup className="list-group-flush">
-            <ListGroupItem>
-              <b>SPACE</b>: Start or Stop the timer | <b>ALT + R</b>: Reset
-              Timer
-            </ListGroupItem>
-            <ListGroupItem>
-              <b>ALT + P</b> : Pomodoro
-            </ListGroupItem>
-            <ListGroupItem>
-              <b>ALT + S</b>: Short Break | <b>ALT + L</b>: Long Break
-            </ListGroupItem>
-          </ListGroup>
-        </Card>
 
-        <Card>
-          <Card.Body>
-            <Card.Title>Settings</Card.Title>
-            <Card.Subtitle>
-              You can set custom times, audio tone and volume via Settings.
-            </Card.Subtitle>
-          </Card.Body>
-          <ListGroup className="list-group-flush">
-            <ListGroupItem>
-              You can change the audio tone and volume via Settings
-            </ListGroupItem>
-            <ListGroupItem>
-              Desktop Notifications are currently supported in Chrome, Firefox
-              and Safari
-            </ListGroupItem>
-          </ListGroup>
-        </Card>
-      </div>
+      {showInfo ? (
+        <div className="docs">
+          <Card>
+            <Card.Body>
+              <Card.Title>Keyboard Shortcuts</Card.Title>
+            </Card.Body>
+            <ListGroup className="list-group-flush">
+              <ListGroupItem>
+                <b>SPACE</b>: Start or Stop the timer | <b>ALT + R</b>: Reset
+                Timer
+              </ListGroupItem>
+              <ListGroupItem>
+                <b>ALT + P</b> : Pomodoro
+              </ListGroupItem>
+              <ListGroupItem>
+                <b>ALT + S</b>: Short Break | <b>ALT + L</b>: Long Break
+              </ListGroupItem>
+            </ListGroup>
+          </Card>
+          <Button size="md" variant="info" onClick={() => setShowInfo(false)}>
+            Hide Hints
+          </Button>
+          <Card>
+            <Card.Body>
+              <Card.Title>Settings</Card.Title>
+              <Card.Subtitle>
+                You can set custom times, audio tone and volume via Settings.
+              </Card.Subtitle>
+            </Card.Body>
+            <ListGroup className="list-group-flush">
+              <ListGroupItem>
+                You can change the audio tone and volume via Settings
+              </ListGroupItem>
+              <ListGroupItem>
+                Desktop Notifications are currently supported in Chrome, Firefox
+                and Safari
+              </ListGroupItem>
+            </ListGroup>
+          </Card>
+        </div>
+      ) : (
+        <Button
+          size="lg"
+          variant="info"
+          style={{ marginBottom: "3vh" }}
+          onClick={() => setShowInfo(true)}
+        >
+          Show Hints
+        </Button>
+      )}
+
+      <KeyboardEventHandler
+        handleKeys={["space", "alt+r"]}
+        onKeyEvent={(key) => {
+          if (key === "space") {
+            setIsGoing(!isGoing);
+          }
+          if (key === "alt+r") {
+            timerReset();
+          }
+        }}
+      />
     </div>
   );
 };
