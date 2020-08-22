@@ -15,6 +15,9 @@ import MyContext from "../../MyContext";
 import "./Main.css";
 import settings from "../../images/settings.png";
 import tomato from "../../images/tomato.png";
+import buzz from "../../audios/buzz.mp3";
+
+let current_audio;
 
 const Main = () => {
   const { timer } = useContext(MyContext);
@@ -40,6 +43,7 @@ const Main = () => {
   }, []);
 
   const notify = () => {
+    //DESKTOP NOTIFICATION
     const options = {
       body: "Your Timer is up!",
       icon: tomato,
@@ -53,11 +57,21 @@ const Main = () => {
     setTimeout(notification.close.bind(notification), 7000); //scompare dallo schermo
   };
 
+  const playAudio = () => {
+    if (current_audio) {
+      current_audio.stop();
+    }
+    const audio = new Audio(buzz);
+    audio.play();
+    current_audio = audio;
+  };
+
   useEffect(() => {
     //*ask for permission for desktop notification
     if (!isDone) {
       return;
     }
+    playAudio();
     if (Notification.permission === "granted") notify();
     else if (Notification.permission === "default") {
       Notification.requestPermission().then((permission) => {
