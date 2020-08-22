@@ -5,16 +5,11 @@ import Header from "./page/Header/Header";
 import Main from "./page/Main/Main";
 import Footer from "./page/Footer/Footer";
 import MyContext from "./MyContext";
-
-const timers = {
-  pomodoro: 25,
-  shortBreak: 5,
-  longBreak: 10,
-};
+import ENV from "./env";
 
 const App = () => {
-  const [timer, setTimer] = useState(timers.pomodoro);
-  const providerValue = useMemo(() => ({ timer, setTimer, data: timers }), [
+  const [timer, setTimer] = useState(ENV.timers.pomodoro);
+  const providerValue = useMemo(() => ({ timer, setTimer, data: ENV.timers }), [
     timer,
     setTimer,
   ]);
@@ -22,14 +17,13 @@ const App = () => {
   const handleKeys = (key) => {
     switch (key) {
       case "alt+p": //!Pomodoro
-        if (timer !== timers.pomodoro) setTimer(timers.pomodoro);
+        if (timer !== ENV.timers.pomodoro) setTimer(ENV.timers.pomodoro);
         break;
       case "alt+s": //!Short Break
-        if (timer !== timers.shortBreak) setTimer(timers.shortBreak);
-
+        if (timer !== ENV.timers.shortBreak) setTimer(ENV.timers.shortBreak);
         break;
       case "alt+l": //!Long Break
-        if (timer !== timers.longBreak) setTimer(timers.longBreak);
+        if (timer !== ENV.timers.longBreak) setTimer(ENV.timers.longBreak);
         break;
       default:
         break;

@@ -14,8 +14,9 @@ import KeyboardEventHandler from "react-keyboard-event-handler";
 import MyContext from "../../MyContext";
 import "./Main.css";
 import settings from "../../images/settings.png";
+import tomato from "../../images/tomato.png";
 
-const Main = (props) => {
+const Main = () => {
   const { timer } = useContext(MyContext);
 
   useEffect(() => {
@@ -26,6 +27,46 @@ const Main = (props) => {
   const [isGoing, setIsGoing] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+
+  useEffect(() => {
+    //only run 1 time at the first time
+    if (!("Notification" in window)) {
+      console.log("This browser does not support desktop notification");
+    } else {
+      if (Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+    }
+  }, []);
+
+  const notify = () => {
+    const options = {
+      body: "Your Timer is up!",
+      icon: tomato,
+      dir: "ltr",
+    };
+    const notification = new Notification("Tomato Timer", options);
+    notification.onclick = (e) => {
+      //window.open("https://marcotodaro.tk");
+      window.focus();
+    };
+    setTimeout(notification.close.bind(notification), 7000); //scompare dallo schermo
+  };
+
+  useEffect(() => {
+    //*ask for permission for desktop notification
+    if (!isDone) {
+      return;
+    }
+    if (Notification.permission === "granted") notify();
+    else if (Notification.permission === "default") {
+      Notification.requestPermission().then((permission) => {
+        if (permission !== "denied") {
+          notify();
+        }
+      });
+    }
+  }, [isDone]);
 
   useEffect(() => {
     if (!isGoing) {
@@ -43,12 +84,13 @@ const Main = (props) => {
   const timerReset = () => {
     setTime(timer * 60);
     setIsGoing(false);
+    setIsDone(false);
   };
 
   return (
     <div className="myMainContainer bg-light rounded">
       {isDone ? (
-        <Alert variant="warning" className="marginTop alert">
+        <Alert variant="danger" className="marginTop alert">
           Pomodoro Timer ended!
         </Alert>
       ) : null}
