@@ -31,16 +31,16 @@ const Main = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
-  useEffect(() => {
-    //only run 1 time at the first time
-    if (!("Notification" in window)) {
-      console.log("This browser does not support desktop notification");
-    } else {
-      if (Notification.permission === "default") {
-        Notification.requestPermission();
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   //only run 1 time at the first time
+  //   if (!("Notification" in window)) {
+  //     console.log("This browser does not support desktop notification");
+  //   } else {
+  //     if (Notification.permission === "default") {
+  //       Notification.requestPermission();
+  //     }
+  //   }
+  // }, []);
 
   const notify = useCallback(() => {
     //DESKTOP NOTIFICATION
