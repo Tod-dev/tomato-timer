@@ -8,23 +8,23 @@ import MyContext from "./MyContext";
 import ENV from "./env";
 
 const App = () => {
-  const [timersSettings, setTimersSettings] = useState(ENV.timers);
-  const [timer, setTimer] = useState(ENV.timers.pomodoro);
+  const [settings, setSettings] = useState(ENV.settings);
+  const [timer, setTimer] = useState(ENV.settings.pomodoro); // timer è quello attuale
   const providerValue = useMemo(
-    () => ({ timer, setTimer, data: timersSettings }),
-    [timer, setTimer, timersSettings]
+    () => ({ timer, setTimer, settings, setSettings }),
+    [timer, setTimer, settings, setSettings]
   );
 
   const handleKeys = (key) => {
     switch (key) {
       case "alt+p": //!Pomodoro
-        if (timer !== ENV.timers.pomodoro) setTimer(ENV.timers.pomodoro);
+        if (timer !== settings.pomodoro) setTimer(settings.pomodoro);
         break;
       case "alt+s": //!Short Break
-        if (timer !== ENV.timers.shortBreak) setTimer(ENV.timers.shortBreak);
+        if (timer !== settings.shortBreak) setTimer(settings.shortBreak);
         break;
       case "alt+l": //!Long Break
-        if (timer !== ENV.timers.longBreak) setTimer(ENV.timers.longBreak);
+        if (timer !== settings.longBreak) setTimer(settings.longBreak);
         break;
       default:
         break;

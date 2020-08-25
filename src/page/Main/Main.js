@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import {
   Alert,
   ButtonGroup,
@@ -13,23 +13,23 @@ import KeyboardEventHandler from "react-keyboard-event-handler";
 
 import MyContext from "../../MyContext";
 import "./Main.css";
-import settings from "../../images/settings.png";
+import settingsImage from "../../images/settings.png";
 import tomato from "../../images/tomato.png";
 import buzz from "../../audios/buzz.mp3";
-
-let current_audio;
+import Settings from "../../components/Settings";
 
 const Main = () => {
-  const { timer } = useContext(MyContext);
+  const { timer, setSettings, setTimer, settings } = useContext(MyContext);
 
   useEffect(() => {
-    setTime(timer * 60);
-  }, [timer]);
+    setTime(timer.value * 60);
+  }, [timer.value]);
 
-  const [time, setTime] = useState(timer * 60);
+  const [time, setTime] = useState(timer.value * 60);
   const [isGoing, setIsGoing] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     //only run 1 time at the first time
@@ -42,8 +42,11 @@ const Main = () => {
     }
   }, []);
 
-  const notify = () => {
+  const notify = useCallback(() => {
     //DESKTOP NOTIFICATION
+    if (!settings.notification) {
+      return;
+    }
     const options = {
       body: "Your Timer is up!",
       icon: tomato,
@@ -55,16 +58,17 @@ const Main = () => {
       window.focus();
     };
     setTimeout(notification.close.bind(notification), 7000); //scompare dallo schermo
-  };
+  }, [settings.notification]);
 
-  const playAudio = () => {
-    if (current_audio) {
-      current_audio.stop();
+  const playAudio = useCallback(() => {
+    if (!settings.audio.value) {
+      return;
     }
+    //settare volume
     const audio = new Audio(buzz);
+    audio.volume = settings.audio.volume / 100;
     audio.play();
-    current_audio = audio;
-  };
+  }, [settings.audio.value, settings.audio.volume]);
 
   useEffect(() => {
     //*ask for permission for desktop notification
@@ -80,7 +84,7 @@ const Main = () => {
         }
       });
     }
-  }, [isDone]);
+  }, [isDone, playAudio, notify]);
 
   useEffect(() => {
     if (!isGoing) {
@@ -96,13 +100,32 @@ const Main = () => {
   }, [time, isGoing]);
 
   const timerReset = () => {
-    setTime(timer * 60);
+    setTime(timer.value * 60);
     setIsGoing(false);
     setIsDone(false);
   };
 
+  const onHideForm = (data) => {
+    //save data
+    //console.log(data);
+    if (!data) return setShowSettings(false);
+    const newSettings = {
+      pomodoro: data.pomodoro,
+      shortBreak: data.shortBreak,
+      longBreak: data.longBreak,
+      audio: data.audio,
+      notification: data.notification,
+    };
+    //console.log(newSettings);
+    setSettings(newSettings);
+    setTimer({ name: timer.name, value: data[timer.name].value });
+    setShowSettings(false);
+  };
+
   return (
     <div className="myMainContainer bg-light rounded">
+      <Settings show={showSettings} onHide={onHideForm} />
+
       {isDone ? (
         <Alert variant="danger" className="marginTop alert">
           Pomodoro Timer ended!
@@ -124,9 +147,9 @@ const Main = () => {
           </Button>
         </ButtonGroup>
         <ButtonGroup size="lg">
-          <Button variant="info" onClick={() => {}}>
+          <Button variant="info" onClick={() => setShowSettings(true)}>
             <Image
-              src={settings}
+              src={settingsImage}
               alt="settings"
               style={{ width: 30, height: 30 }}
             />
@@ -188,7 +211,6 @@ const Main = () => {
           Show Hints
         </Button>
       )}
-
       <KeyboardEventHandler
         handleKeys={["space", "alt+r"]}
         onKeyEvent={(key) => {
