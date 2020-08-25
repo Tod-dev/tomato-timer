@@ -136,7 +136,22 @@ const Main = () => {
         className="buttonContainer marginTop"
       >
         <ButtonGroup size="lg">
-          <Button variant="success" onClick={() => setIsGoing(true)}>
+          <Button
+            variant="success"
+            onClick={() => {
+              if (!("Notification" in window)) {
+                console.log(
+                  "This browser does not support desktop notification"
+                );
+              } else {
+                if (Notification.permission === "default") {
+                  Notification.requestPermission();
+                }
+              }
+
+              setIsGoing(true);
+            }}
+          >
             Start
           </Button>
           <Button variant="danger" onClick={() => setIsGoing(false)}>
