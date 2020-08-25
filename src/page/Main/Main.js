@@ -107,7 +107,7 @@ const Main = () => {
 
   const onHideForm = (data) => {
     //save data
-    console.log(data);
+    //console.log(data);
     if (!data) return setShowSettings(false);
     timerReset();
     const newSettings = {
