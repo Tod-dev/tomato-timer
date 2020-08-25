@@ -1,55 +1,42 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import Slider from "react-rangeslider";
 
 import MyContext from "../MyContext";
+import Alert from "react-bootstrap/Alert";
 
 const Settings = (props) => {
   //! aggiungere settings : desktop notification e audio (on/off), settare volume audio, fare in modo che i dati rimangano al caricamento della pagina
+  const { isGoing, show, onHide } = props;
   const { settings } = useContext(MyContext);
   const [data, setData] = useState(settings);
-  const [switchNotification, setSwitchNotification] = useState(
-    settings.notification
-  );
-  const [switchAudio, setSwitchAudio] = useState(settings.audio.value);
-  const [volume, setVolume] = useState(settings.audio.volume);
-
-  useEffect(() => {
-    setData((data) => {
-      return {
-        ...data,
-        audio: { value: switchAudio, volume },
-        notification: switchNotification,
-      };
-    });
-  }, [switchAudio, volume, switchNotification]);
 
   const changeFormHandler = (event) => {
-    if (event.target.value > 60) event.target.value = 60;
-    if (event.target.value < 1) event.target.value = 1;
+    if (!event.target.value) event.target.value = 1;
     if (event.target.id === "pomodoro") {
       setData({
         ...data,
-        pomodoro: { ...data.pomodoro, value: parseInt(event.target.value) },
+        pomodoro: parseInt(event.target.value),
       });
     } else if (event.target.id === "shortBreak") {
       setData({
         ...data,
-        shortBreak: { ...data.shortBreak, value: parseInt(event.target.value) },
+        shortBreak: parseInt(event.target.value),
       });
     } else {
       setData({
         ...data,
-        longBreak: { ...data.longBreak, value: parseInt(event.target.value) },
+        longBreak: parseInt(event.target.value),
       });
     }
   };
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -59,38 +46,38 @@ const Settings = (props) => {
       </Modal.Header>
       <Modal.Body>
         <h2> Timers </h2>
-        <label htmlFor={data.pomodoro.name}>Pomodoro Timer:</label>
+        <label htmlFor="pomodoro">Pomodoro Timer:</label>
         <input
           type="number"
-          id={data.pomodoro.name}
-          name={data.pomodoro.name}
+          id="pomodoro"
+          name="pomodoro"
           min="1"
           max="60"
-          value={data.pomodoro.value}
+          value={data.pomodoro}
           onChange={changeFormHandler}
           className="ml-3 myInput"
         />
         <br />
-        <label htmlFor={data.shortBreak.name}>Short Break Timer:</label>
+        <label htmlFor="shortBreak">Short Break Timer:</label>
         <input
           type="number"
-          id={data.shortBreak.name}
-          name={data.shortBreak.name}
+          id="shortBreak"
+          name="shortBreak"
           min="1"
           max="60"
-          value={data.shortBreak.value}
+          value={data.shortBreak}
           onChange={changeFormHandler}
           className="ml-3 myInput"
         />
         <br />
-        <label htmlFor={data.longBreak.name}>Long BreakTimer:</label>
+        <label htmlFor="longBreak">Long BreakTimer:</label>
         <input
           type="number"
-          id={data.longBreak.name}
-          name={data.longBreak.name}
+          id="longBreak"
+          name="longBreak"
           min="1"
           max="60"
-          value={data.longBreak.value}
+          value={data.longBreak}
           onChange={changeFormHandler}
           className="ml-3 myInput"
         />
@@ -101,8 +88,10 @@ const Settings = (props) => {
         </label>
         <BootstrapSwitchButton
           name="desktopNotification"
-          checked={switchNotification}
-          onChange={() => setSwitchNotification(!switchNotification)}
+          checked={data.notification}
+          onChange={() =>
+            setData({ ...data, notification: !data.notification })
+          }
           size="lg"
         />
         <br />
@@ -111,23 +100,28 @@ const Settings = (props) => {
         </label>
         <BootstrapSwitchButton
           name="audio"
-          checked={switchAudio}
-          onChange={() => setSwitchAudio(!switchAudio)}
+          checked={data.audio}
+          onChange={() => setData({ ...data, audio: !data.audio })}
           size="lg"
         />
         <div className="slider">
-          <label htmlFor="slider">Volume: {volume}% </label>
+          <label htmlFor="slider">Volume: {data.volume}% </label>
           <Slider
             name="slider"
             min={0}
             max={100}
-            value={volume}
-            onChange={(value) => setVolume(value)}
+            value={data.volume}
+            onChange={(value) => setData({ ...data, volume: value })}
             style={{ color: "blue" }}
           />
         </div>
       </Modal.Body>
       <Modal.Footer>
+        {isGoing ? (
+          <Alert variant="warning" size="sm">
+            timer in corso! se salvi verrà resettato!
+          </Alert>
+        ) : null}
         <Button onClick={props.onHide.bind(this, data)}>Save</Button>
       </Modal.Footer>
     </Modal>

@@ -10,11 +10,11 @@ import "./Header.css";
 import tomato from "../../images/tomato.png";
 
 const Header = () => {
-  const { setTimer, settings } = useContext(MyContext);
+  const { settings, setSettings } = useContext(MyContext);
   //console.log(data);
   return (
     <Navbar bg="light" expand="md" className="myHeaderContainer rounded">
-      <Navbar.Brand href="#home">
+      <Navbar.Brand>
         <img
           alt="That's a tomato"
           src={tomato}
@@ -34,34 +34,19 @@ const Header = () => {
           <ButtonGroup size="lg" className="buttons">
             <Button
               variant="primary"
-              onClick={() =>
-                setTimer({
-                  name: settings.pomodoro.name,
-                  value: settings.pomodoro.value,
-                })
-              }
+              onClick={() => setSettings({ ...settings, actual: "pomodoro" })}
             >
               Pomodoro
             </Button>
             <Button
               variant="warning"
-              onClick={() =>
-                setTimer({
-                  name: settings.shortBreak.name,
-                  value: settings.shortBreak.value,
-                })
-              }
+              onClick={() => setSettings({ ...settings, actual: "shortBreak" })}
             >
               Short Break
             </Button>
             <Button
               variant="dark"
-              onClick={() =>
-                setTimer({
-                  name: settings.longBreak.name,
-                  value: settings.longBreak.value,
-                })
-              }
+              onClick={() => setSettings({ ...settings, actual: "longBreak" })}
             >
               Long Break
             </Button>

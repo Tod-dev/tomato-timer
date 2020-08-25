@@ -19,17 +19,18 @@ import buzz from "../../audios/buzz.mp3";
 import Settings from "../../components/Settings";
 
 const Main = () => {
-  const { timer, setSettings, setTimer, settings } = useContext(MyContext);
+  const { settings, setSettings } = useContext(MyContext);
 
   useEffect(() => {
-    setTime(timer.value * 60);
-  }, [timer.value]);
+    setTime(settings[settings.actual] * 60);
+  }, [settings]);
 
-  const [time, setTime] = useState(timer.value * 60);
+  const [time, setTime] = useState(settings[settings.actual] * 60);
   const [isGoing, setIsGoing] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [canNotify, setCanNotify] = useState(true);
 
   // useEffect(() => {
   //   //only run 1 time at the first time
@@ -47,6 +48,9 @@ const Main = () => {
     if (!settings.notification) {
       return;
     }
+    if (!canNotify) {
+      return;
+    }
     const options = {
       body: "Your Timer is up!",
       icon: tomato,
@@ -54,21 +58,22 @@ const Main = () => {
     };
     const notification = new Notification("Tomato Timer", options);
     notification.onclick = (e) => {
-      //window.open("https://marcotodaro.tk");
+      //window.open("https://marcotodaro.tk", "_blank");
       window.focus();
     };
     setTimeout(notification.close.bind(notification), 7000); //scompare dallo schermo
-  }, [settings.notification]);
+    setCanNotify(false);
+  }, [settings.notification, canNotify]);
 
   const playAudio = useCallback(() => {
-    if (!settings.audio.value) {
+    if (!settings.audio) {
       return;
     }
     //settare volume
     const audio = new Audio(buzz);
-    audio.volume = settings.audio.volume / 100;
+    audio.volume = settings.volume / 100;
     audio.play();
-  }, [settings.audio.value, settings.audio.volume]);
+  }, [settings.audio, settings.volume]);
 
   useEffect(() => {
     //*ask for permission for desktop notification
@@ -77,6 +82,7 @@ const Main = () => {
     }
     playAudio();
     if (Notification.permission === "granted") notify();
+    /*
     else if (Notification.permission === "default") {
       Notification.requestPermission().then((permission) => {
         if (permission !== "denied") {
@@ -84,6 +90,7 @@ const Main = () => {
         }
       });
     }
+    */
   }, [isDone, playAudio, notify]);
 
   useEffect(() => {
@@ -100,32 +107,47 @@ const Main = () => {
   }, [time, isGoing]);
 
   const timerReset = () => {
-    setTime(timer.value * 60);
+    setTime(settings[settings.actual] * 60);
     setIsGoing(false);
     setIsDone(false);
+    setCanNotify(true);
+  };
+
+  const check = (value) => {
+    if (!value) {
+      value = 1;
+    }
+    if (value > 60) {
+      value = 60;
+    }
+    return value;
   };
 
   const onHideForm = (data) => {
     //save data
     //console.log(data);
     if (!data) return setShowSettings(false);
+    data.pomodoro = check(data.pomodoro);
+    data.shortBreak = check(data.shortBreak);
+    data.longBreak = check(data.longBreak);
     timerReset();
     const newSettings = {
       pomodoro: data.pomodoro,
       shortBreak: data.shortBreak,
       longBreak: data.longBreak,
       audio: data.audio,
+      volume: data.volume,
       notification: data.notification,
+      actual: data.actual,
     };
     //console.log(newSettings);
     setSettings(newSettings);
-    setTimer({ name: timer.name, value: data[timer.name].value });
     setShowSettings(false);
   };
 
   return (
     <div className="myMainContainer bg-light rounded">
-      <Settings show={showSettings} onHide={onHideForm} />
+      <Settings isGoing={isGoing} show={showSettings} onHide={onHideForm} />
 
       {isDone ? (
         <Alert variant="danger" className="marginTop alert">
@@ -140,6 +162,9 @@ const Main = () => {
           <Button
             variant="success"
             onClick={() => {
+              if (time === 0) {
+                return;
+              }
               if (!("Notification" in window)) {
                 console.log(
                   "This browser does not support desktop notification"
@@ -149,8 +174,11 @@ const Main = () => {
                   Notification.requestPermission();
                 }
               }
-              setIsDone(false);
-              setIsGoing(true);
+
+              if (time > 0) {
+                setIsGoing(true);
+                setIsDone(false);
+              }
             }}
           >
             Start
@@ -158,7 +186,9 @@ const Main = () => {
           <Button
             variant="danger"
             onClick={() => {
-              setIsDone(false);
+              if (time === 0) {
+                return;
+              }
               setIsGoing(false);
             }}
           >
