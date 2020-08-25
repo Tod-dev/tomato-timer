@@ -43,7 +43,8 @@ const Icon = (props) => {
     );
   }
   const imageClickedHandler = () => {
-    window.location.href = link;
+    //window.location.href = link;
+    window.open(link, "_blank");
   };
   return (
     <Image

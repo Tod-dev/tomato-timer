@@ -107,8 +107,9 @@ const Main = () => {
 
   const onHideForm = (data) => {
     //save data
-    //console.log(data);
+    console.log(data);
     if (!data) return setShowSettings(false);
+    timerReset();
     const newSettings = {
       pomodoro: data.pomodoro,
       shortBreak: data.shortBreak,
@@ -148,13 +149,19 @@ const Main = () => {
                   Notification.requestPermission();
                 }
               }
-
+              setIsDone(false);
               setIsGoing(true);
             }}
           >
             Start
           </Button>
-          <Button variant="danger" onClick={() => setIsGoing(false)}>
+          <Button
+            variant="danger"
+            onClick={() => {
+              setIsDone(false);
+              setIsGoing(false);
+            }}
+          >
             Stop
           </Button>
           <Button variant="secondary" onClick={timerReset}>
