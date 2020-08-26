@@ -117,6 +117,9 @@ const Main = () => {
     if (value > 60) {
       value = 60;
     }
+    if(value < 1){
+      value = 1;
+    }
     return value;
   };
 
