@@ -82,15 +82,6 @@ const Main = () => {
     }
     playAudio();
     if (Notification.permission === "granted") notify();
-    /*
-    else if (Notification.permission === "default") {
-      Notification.requestPermission().then((permission) => {
-        if (permission !== "denied") {
-          notify();
-        }
-      });
-    }
-    */
   }, [isDone, playAudio, notify]);
 
   useEffect(() => {
@@ -158,7 +149,7 @@ const Main = () => {
         aria-label="Toolbar with button groups"
         className="buttonContainer marginTop"
       >
-        <ButtonGroup size="lg">
+        <ButtonGroup size="lg" className="myButtonGroup">
           <Button
             variant="success"
             onClick={() => {
@@ -198,7 +189,7 @@ const Main = () => {
             Reset
           </Button>
         </ButtonGroup>
-        <ButtonGroup size="lg">
+        <ButtonGroup size="lg" className="myButtonGroup">
           <Button variant="info" onClick={() => setShowSettings(true)}>
             <Image
               src={settingsImage}
@@ -208,6 +199,7 @@ const Main = () => {
           </Button>
         </ButtonGroup>
       </ButtonToolbar>
+          <p className="title">{settings.actual === "pomodoro" ? "Pomodoro" : settings.actual === "shortBreak" ? "Short Break" : "Long Break"} timer:</p>
       <div className="timer">
         {parseInt(time / 60)} : {parseInt(time % 60) < 10 ? "0" : null}
         {parseInt(time % 60)}

@@ -44,7 +44,7 @@ const Settings = (props) => {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">Settings</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="mySettings">
         <h2> Timers </h2>
         <label htmlFor="pomodoro">Pomodoro Timer:</label>
         <input

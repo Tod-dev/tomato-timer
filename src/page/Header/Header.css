@@ -1,9 +1,15 @@
 .myHeaderContainer {
   width: 85vw;
-  max-height: 30vh;
 }
+.navbar-brand{
+  font-size:2vmax !important;
+}
+
 .buttons {
-  max-height: 15vh;
+  flex-wrap: wrap;
+}
+.btn-group-lg>.btn, .btn-lg{
+  font-size:1.5vmax !important;
 }
 .extraMargin {
   margin: 2vh 2vw;

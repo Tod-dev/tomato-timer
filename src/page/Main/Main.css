@@ -8,7 +8,7 @@
 }
 
 .timer {
-  font-size: 10vmax;
+  font-size: 8vmax;
 }
 
 .marginTop {
@@ -53,4 +53,17 @@
 
 .rangeslider-horizontal .rangeslider__fill {
   background-color: #0069d9 !important;
+}
+
+
+.myButtonGroup{
+  margin: 2vmin !important;
+  display: flex;
+  flex-wrap: wrap;
+}
+.title{
+  margin: 2vh 0 0 0;
+}
+.mySettings > h2{
+  font-weight: bolder;
 }
