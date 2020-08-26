@@ -15,7 +15,7 @@ import MyContext from "../../MyContext";
 import "./Main.css";
 import settingsImage from "../../images/settings.png";
 import tomato from "../../images/tomato.png";
-import buzz from "../../audios/buzz.mp3";
+//import buzz from "../../audios/buzz.mp3";
 import Settings from "../../components/Settings";
 
 const Main = () => {
@@ -70,7 +70,9 @@ const Main = () => {
       return;
     }
     //settare volume
-    const audio = new Audio(buzz);
+
+    const audio = document.querySelector(".audio");
+    audio.currentTime = 0;
     audio.volume = settings.volume / 100;
     audio.play();
   }, [settings.audio, settings.volume]);
