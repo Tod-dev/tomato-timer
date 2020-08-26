@@ -17,6 +17,8 @@ import settingsImage from "../../images/settings.png";
 import tomato from "../../images/tomato.png";
 //import buzz from "../../audios/buzz.mp3";
 import Settings from "../../components/Settings";
+import ENV from "../../env";
+
 
 const Main = () => {
   const { settings, setSettings } = useContext(MyContext);
@@ -106,9 +108,9 @@ const Main = () => {
     setCanNotify(true);
   };
 
-  const check = (value) => {
+  const check = (value,type) => {
     if (!value) {
-      value = 1;
+      value = ENV.settings[type];
     }
     if (value > 60) {
       value = 60;
@@ -118,15 +120,16 @@ const Main = () => {
 
   const onHideForm = (data) => {
     //save data
-    //console.log(data);
+     console.log(data);
     if (!data) return setShowSettings(false);
-    data.pomodoro = check(data.pomodoro);
-    data.shortBreak = check(data.shortBreak);
-    data.longBreak = check(data.longBreak);
+    //check data
+    data.pomodoro = check(data.pomodoro,"pomodoro");
+    data.shortBreak = check(data.shortBreak,"shortBreak");
+    data.longBreak = check(data.longBreak,"longBreak");
     timerReset();
     const newSettings = {
-      pomodoro: data.pomodoro,
-      shortBreak: data.shortBreak,
+      pomodoro: data.pomodoro ,
+      shortBreak: data.shortBreak ,
       longBreak: data.longBreak,
       audio: data.audio,
       volume: data.volume,

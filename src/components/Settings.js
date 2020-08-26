@@ -14,7 +14,6 @@ const Settings = (props) => {
   const [data, setData] = useState(settings);
 
   const changeFormHandler = (event) => {
-    if (!event.target.value) event.target.value = 1;
     if (event.target.id === "pomodoro") {
       setData({
         ...data,
@@ -53,7 +52,7 @@ const Settings = (props) => {
           name="pomodoro"
           min="1"
           max="60"
-          value={data.pomodoro}
+          value={data.pomodoro || ""}
           onChange={changeFormHandler}
           className="ml-3 myInput"
         />
@@ -65,7 +64,7 @@ const Settings = (props) => {
           name="shortBreak"
           min="1"
           max="60"
-          value={data.shortBreak}
+          value={data.shortBreak || ""}
           onChange={changeFormHandler}
           className="ml-3 myInput"
         />
@@ -77,7 +76,7 @@ const Settings = (props) => {
           name="longBreak"
           min="1"
           max="60"
-          value={data.longBreak}
+          value={data.longBreak || ""}
           onChange={changeFormHandler}
           className="ml-3 myInput"
         />
