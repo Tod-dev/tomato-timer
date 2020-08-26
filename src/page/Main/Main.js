@@ -85,7 +85,9 @@ const Main = () => {
       return;
     }
     playAudio();
+    if ('Notification' in window){
     if (Notification.permission === "granted") notify();
+    }
   }, [isDone, playAudio, notify]);
 
   useEffect(() => {
