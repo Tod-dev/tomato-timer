@@ -7,10 +7,15 @@
 
 .buttons {
   flex-wrap: wrap;
+  font-weight: bolder;
 }
 .btn-group-lg>.btn, .btn-lg{
   font-size:1.5vmax !important;
 }
 .extraMargin {
   margin: 2vh 2vw;
+}
+.pomodoroButton{
+  background: rgb(129, 28, 28) !important;
+  border-color: rgb(129, 28, 28) !important;
 }

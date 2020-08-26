@@ -15,14 +15,13 @@ const Header = () => {
   return (
     <Navbar bg="light" expand="md" className="myHeaderContainer rounded">
       <Navbar.Brand>
-        <img
+
+        <Image           
           alt="That's a tomato"
           src={tomato}
-          style={{ width: 30, height: 30 }}
-          className="d-inline-block align-top"
-        />{" "}
-        <Image />
-        {"  "}
+          style={{ width: 40, height: 40,marginRight: "2vw" }}
+        />
+      
         Tomato Timer
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -34,6 +33,7 @@ const Header = () => {
           <ButtonGroup size="lg" className="buttons">
             <Button
               variant="primary"
+              className="pomodoroButton"
               onClick={() => setSettings({ ...settings, actual: "pomodoro" })}
             >
               Pomodoro

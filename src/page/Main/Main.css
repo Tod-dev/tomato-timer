@@ -67,3 +67,9 @@
 .mySettings > h2{
   font-weight: bolder;
 }
+.startButton{
+  background: rgb(37, 143, 37) !important;
+}
+.showHintButton{
+  background: rgb(34, 103, 182) !important;
+}

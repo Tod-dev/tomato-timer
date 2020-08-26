@@ -19,7 +19,6 @@ import tomato from "../../images/tomato.png";
 import Settings from "../../components/Settings";
 import ENV from "../../env";
 
-
 const Main = () => {
   const { settings, setSettings } = useContext(MyContext);
 
@@ -58,12 +57,15 @@ const Main = () => {
       icon: tomato,
       dir: "ltr",
     };
-    const notification = new Notification("Tomato Timer", options);
-    notification.onclick = (e) => {
+    navigator.serviceWorker.ready.then(function(registration) {
+      registration.showNotification('Tomato Timer', options) 
+    });
+    //const notification = new Notification("Tomato Timer", options);
+    //notification.onclick = (e) => {
       //window.open("https://marcotodaro.tk", "_blank");
-      window.focus();
-    };
-    setTimeout(notification.close.bind(notification), 7000); //scompare dallo schermo
+      //window.focus();
+    //};
+    //setTimeout(notification.close.bind(notification), 7000); //scompare dallo schermo
     setCanNotify(false);
   }, [settings.notification, canNotify]);
 
@@ -86,7 +88,7 @@ const Main = () => {
     }
     playAudio();
     if ('Notification' in window){
-    if (Notification.permission === "granted") notify();
+      if (Notification.permission === "granted") notify();
     }
   }, [isDone, playAudio, notify]);
 
@@ -118,7 +120,7 @@ const Main = () => {
       value = 60;
     }
     if(value < 1){
-      value = 1;
+      value = ENV.settings[type];
     }
     return value;
   };
@@ -162,6 +164,7 @@ const Main = () => {
         <ButtonGroup size="lg" className="myButtonGroup">
           <Button
             variant="success"
+            className="startButton"
             onClick={() => {
               if (time === 0) {
                 return;
@@ -234,7 +237,7 @@ const Main = () => {
               </ListGroupItem>
             </ListGroup>
           </Card>
-          <Button size="md" variant="info" onClick={() => setShowInfo(false)}>
+          <Button size="md" variant="info" className="showHintButton" onClick={() => setShowInfo(false)}>
             Hide Hints
           </Button>
           <Card>
@@ -259,6 +262,7 @@ const Main = () => {
         <Button
           size="lg"
           variant="info"
+          className="showHintButton"
           style={{ marginBottom: "3vh" }}
           onClick={() => setShowInfo(true)}
         >
