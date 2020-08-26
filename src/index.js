@@ -11,4 +11,4 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
-serviceWorker.register();
+serviceWorker.register(); //"**/*.{png,json,mp3,xml,ico,html,js,txt,svg,webmanifest,css}"
