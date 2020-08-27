@@ -88,8 +88,13 @@ const Settings = (props) => {
         <BootstrapSwitchButton
           name="desktopNotification"
           checked={data.notification}
-          onChange={() =>
-            setData({ ...data, notification: !data.notification })
+          onChange={async() => {
+            await setData(d => {
+              if(!d.notification){
+                props.checkNotification();
+              }
+              return{ ...d, notification: !d.notification }});
+          }
           }
           size="lg"
         />

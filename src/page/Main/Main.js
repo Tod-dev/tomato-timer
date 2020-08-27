@@ -33,16 +33,33 @@ const Main = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [canNotify, setCanNotify] = useState(true);
 
-  // useEffect(() => {
-  //   //only run 1 time at the first time
-  //   if (!("Notification" in window)) {
-  //     console.log("This browser does not support desktop notification");
-  //   } else {
-  //     if (Notification.permission === "default") {
-  //       Notification.requestPermission();
-  //     }
-  //   }
-  // }, []);
+  useEffect(()=>{
+    const title = document.getElementById("appTitle");
+    const appTitle = ENV.appTitle;
+    if(isDone){
+      title.innerHTML = "Buzzz!";
+    }
+    else if(time < settings[settings.actual] * 60){
+      title.innerHTML = `( ${parseInt(time / 60) } : ${parseInt(time % 60) < 10 ? 0 : null }${parseInt(time % 60)} )  ${appTitle}`;
+    }
+    //condizione iniziale
+    else {
+      if(title !== appTitle)
+        title.innerHTML = appTitle;
+    }
+  },[time,isDone,settings]);
+
+  const checkNotification = () => {
+    if (!("Notification" in window)) {
+      console.log(
+        "This browser does not support desktop notification"
+      );
+    } else {
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+      }
+    }
+  };
 
   const notify = useCallback(() => {
     //DESKTOP NOTIFICATION
@@ -127,7 +144,7 @@ const Main = () => {
 
   const onHideForm = (data) => {
     //save data
-     //console.log(data);
+    console.log(data);
     if (!data) return setShowSettings(false);
     //check data
     data.pomodoro = check(data.pomodoro,"pomodoro");
@@ -150,7 +167,7 @@ const Main = () => {
 
   return (
     <div className="myMainContainer bg-light rounded">
-      <Settings isGoing={isGoing} show={showSettings} onHide={onHideForm} />
+      <Settings isGoing={isGoing} show={showSettings} onHide={onHideForm} checkNotification={checkNotification} />
 
       {isDone ? (
         <Alert variant="danger" className="marginTop alert">
@@ -169,15 +186,8 @@ const Main = () => {
               if (time === 0) {
                 return;
               }
-              if (!("Notification" in window)) {
-                console.log(
-                  "This browser does not support desktop notification"
-                );
-              } else {
-                if (Notification.permission === "default") {
-                  Notification.requestPermission();
-                }
-              }
+
+              checkNotification();
 
               if (time > 0) {
                 setIsGoing(true);

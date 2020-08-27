@@ -1,10 +1,11 @@
 export default {
   mail: "marcoposta59@gmail.com",
+  appTitle: "My Tomato Timer",
   settings: {
-    pomodoro: 0.1,
+    pomodoro: 25,
     shortBreak: 5,
     longBreak: 10,
-    audio: false,
+    audio: true,
     volume: 50,
     notification: true,
     actual: "pomodoro",
