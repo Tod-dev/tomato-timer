@@ -144,7 +144,7 @@ const Main = () => {
 
   const onHideForm = (data) => {
     //save data
-    console.log(data);
+    //console.log(data);
     if (!data) return setShowSettings(false);
     //check data
     data.pomodoro = check(data.pomodoro,"pomodoro");
