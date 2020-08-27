@@ -1,3 +1,4 @@
+//! in package.json -> && cat src/addToPrecacheManifest.js >> build/precache-manifest.numeriiiIII.js
 self.__precacheManifest = self.__precacheManifest.concat([
 {
   "revision": null,
