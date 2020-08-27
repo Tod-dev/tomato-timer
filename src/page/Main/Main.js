@@ -40,7 +40,7 @@ const Main = () => {
       title.innerHTML = "Buzzz!";
     }
     else if(time < settings[settings.actual] * 60){
-      title.innerHTML = `( ${parseInt(time / 60) } : ${parseInt(time % 60) < 10 ? 0 : null }${parseInt(time % 60)} )  ${appTitle}`;
+      title.innerHTML = `( ${parseInt(time / 60) } : ${parseInt(time % 60) < 10 ? 0 : "" }${parseInt(time % 60)} )  ${appTitle}`;
     }
     //condizione iniziale
     else {
